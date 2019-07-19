@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.e.lojadecarros.model.VehicleGeneral;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AsyncManager extends AsyncTask<Void, Void, VehicleDao> {

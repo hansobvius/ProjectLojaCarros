@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     private RecyclerView mRecyclerView;
     private MainAdapter mMainAdapter;
     private ApiRequest apiRequest;
-    private AsyncManager asyncManager;
-    private  VehicleGeneral vehicleGeneral;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +34,22 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         setContentView(R.layout.activity_main);
         Stetho.initializeWithDefaults(this);
 
-        this.mRecyclerView = findViewById(R.id.main_recycler_view);
-        this.mRecyclerView.setHasFixedSize(true);
-        this.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.mMainAdapter = new MainAdapter(this, internetConnection());
-        mRecyclerView.setAdapter(mMainAdapter);
-        apiRequest = new ApiRequest(this, getApplicationContext());
-        asyncManager = new AsyncManager(this);
+        initMainView();
     }
 
     @Override
     protected void onResume(){
         super.onResume();
         getApiRequest();
+    }
+
+    private void initMainView(){
+        this.mRecyclerView = findViewById(R.id.main_recycler_view);
+        this.mRecyclerView.setHasFixedSize(true);
+        this.mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.mMainAdapter = new MainAdapter(this, internetConnection());
+        mRecyclerView.setAdapter(mMainAdapter);
+        apiRequest = new ApiRequest(this, getApplicationContext());
     }
 
     private void getApiRequest() {
@@ -65,17 +66,10 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void getVehicleList(List<VehicleGeneral> vehicleGenerals) {
-        if(internetConnection()){
+        if(!vehicleGenerals.isEmpty() || vehicleGenerals.size() != 0){
             mMainAdapter.setAdapterData(vehicleGenerals);
-        }else{
-            asyncManager.execute();
-            vehicleGeneral = new VehicleGeneral();
-            vehicleGenerals = asyncManager.getVehicleList();
-            if(!internetConnection() && vehicleGenerals.isEmpty() || vehicleGenerals == null){
-                Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_LONG).show();
-            }else{
-                mMainAdapter.setAdapterData(asyncManager.getVehicleList());
-            }
+        }else if(!internetConnection() && vehicleGenerals.isEmpty() || vehicleGenerals.size() == 0){
+            Toast.makeText(this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
         }
     }
 }

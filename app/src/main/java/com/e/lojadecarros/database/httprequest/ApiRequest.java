@@ -3,6 +3,7 @@ package com.e.lojadecarros.database.httprequest;
 import android.content.Context;
 import android.util.Log;
 
+import com.e.lojadecarros.database.AsyncManager;
 import com.e.lojadecarros.database.VehicleDao;
 import com.e.lojadecarros.database.VehicleDatabase;
 import com.e.lojadecarros.model.VehicleGeneral;
@@ -20,6 +21,7 @@ public class ApiRequest {
     private MainPresenter.View view;
     private Context mContext;
     private VehicleDao vehicleDao;
+    private AsyncManager asyncManager;
 
     public ApiRequest(MainPresenter.View view, Context context){
         this.view = view;
@@ -29,6 +31,12 @@ public class ApiRequest {
         }
         VehicleDatabase vehicleDatabase = VehicleDatabase.getDatabase(mContext);
         this.vehicleDao = vehicleDatabase.vehicleDao();
+        initManager(this.mContext);
+    }
+
+    private void initManager(Context context){
+        this.asyncManager = new AsyncManager(context);
+        this.asyncManager.execute();
     }
 
     public void getVehiclesList(int page){
@@ -46,6 +54,7 @@ public class ApiRequest {
                     @Override
                     public void onFailure(Call<List<VehicleGeneral>> call, Throwable t) {
                         Log.i("RESPONSE", "ERROR " + t.toString());
+                        view.getVehicleList(asyncManager.getVehicleList());
                     }
                 });
     }
