@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">LojaDeCarros</string>
+    <string name="car_image">car image</string>
+    <string name="km">Km</string>
+    <string name="preco_icone">R$</string>
+    <string name="marca">Marca</string>
+    <string name="modelo">Modelo</string>
+    <string name="ano_modelo">Ano do Modelo</string>
+    <string name="ano_fabr">Ano de Fabricação</string>
+    <string name="no_internet_connection">Sem Conexão com a Internet</string>
+</resources>

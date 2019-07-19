@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#8B0000</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#FFF</color>
+
+    <color name="main_view_background">	#C0C0C0	</color>
+    <color name="price_color">#FFF</color>
+</resources>
