@@ -7,16 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e.lojadecarros.R;
 import com.e.lojadecarros.model.VehicleGeneral;
-import com.e.lojadecarros.presenter.MainPresenter;
 import com.e.lojadecarros.ui.DetailActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder mainViewHolder, int i) {
         VehicleGeneral vehicleGeneral = vehicleGeneralList.get(i);
-        Picasso.with(mContext).load(vehicleGeneral.getImage()).into(mainViewHolder.mImageView);
+        Glide.with(mContext).load(vehicleGeneral.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(mainViewHolder.mImageView);
         mainViewHolder.mTitle.setText(vehicleGeneral.getMake() + " " + vehicleGeneral.getModel());
         mainViewHolder.mDescription.setText(vehicleGeneral.getVersion());
         mainViewHolder.mYear.setText(

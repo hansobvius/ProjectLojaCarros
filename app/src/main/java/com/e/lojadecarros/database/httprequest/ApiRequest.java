@@ -48,7 +48,7 @@ public class ApiRequest {
                     @Override
                     public void onResponse(Call<List<VehicleGeneral>> call, Response<List<VehicleGeneral>> response) {
                         vehicleDao.insert(response.body());
-                        view.getVehicleList(response.body());
+                        setMainView();
                     }
 
                     @Override
@@ -57,5 +57,9 @@ public class ApiRequest {
                         view.getVehicleList(asyncManager.getVehicleList());
                     }
                 });
+    }
+
+    private void setMainView(){
+        view.getVehicleList(vehicleDao.getAll());
     }
 }
