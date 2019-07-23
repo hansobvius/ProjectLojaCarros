@@ -13,10 +13,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e.lojadecarros.R;
 import com.e.lojadecarros.database.AsyncManager;
 import com.e.lojadecarros.model.VehicleGeneral;
+import com.e.lojadecarros.presenter.MainPresenter;
 
 import static com.e.lojadecarros.ui.adapter.MainAdapter.INTENT_EXTRA;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements MainPresenter.Detail {
 
     private AsyncManager asyncManager;
     private int vehicleGeneralId;
@@ -50,32 +51,30 @@ public class DetailActivity extends AppCompatActivity {
         km = findViewById(R.id.km);
         anoModelo = findViewById(R.id.anoModelo);
         anoFabr = findViewById(R.id.anoFabr);
-        asyncManager = new AsyncManager(this);
+        asyncManager = new AsyncManager(this, getApplicationContext());
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-        asyncManager.execute();
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        populateView();
+        asyncManager.getVehicle(vehicleGeneralId);
     }
 
-
-    private void populateView(){
-        mVehicleGeneral = asyncManager.getVehicle(vehicleGeneralId);
-        Glide.with(this).load(mVehicleGeneral.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(mImageVehicle);
-        mVehicleTitle.setText(mVehicleGeneral.model);
-        mVehicleDescr.setText(mVehicleGeneral.version);
-        price.setText(getResources().getString(R.string.km) + ": " + mVehicleGeneral.price);
-        marca.setText(getResources().getString(R.string.marca) + ": " +mVehicleGeneral.make);
-        modelo.setText(getResources().getString(R.string.modelo) + ": " + mVehicleGeneral.model);
-        km.setText(getResources().getString(R.string.km) + ": " + mVehicleGeneral.km);
-        anoModelo.setText(getResources().getString(R.string.ano_modelo) + ": " + mVehicleGeneral.yearModel);
-        anoFabr.setText(getResources().getString(R.string.ano_fabr) + ": " + mVehicleGeneral.yearFab);
+    @Override
+    public void getVehicle(VehicleGeneral vehicleGeneral) {
+        Glide.with(this).load(vehicleGeneral.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(mImageVehicle);
+        mVehicleTitle.setText(vehicleGeneral.model);
+        mVehicleDescr.setText(vehicleGeneral.version);
+        price.setText(getResources().getString(R.string.km) + ": " + vehicleGeneral.price);
+        marca.setText(getResources().getString(R.string.marca) + ": " +vehicleGeneral.make);
+        modelo.setText(getResources().getString(R.string.modelo) + ": " + vehicleGeneral.model);
+        km.setText(getResources().getString(R.string.km) + ": " + vehicleGeneral.km);
+        anoModelo.setText(getResources().getString(R.string.ano_modelo) + ": " + vehicleGeneral.yearModel);
+        anoFabr.setText(getResources().getString(R.string.ano_fabr) + ": " + vehicleGeneral.yearFab);
     }
 }

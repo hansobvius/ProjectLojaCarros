@@ -2,12 +2,14 @@ package com.e.lojadecarros.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +21,11 @@ import com.e.lojadecarros.ui.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder>{
 
@@ -34,12 +41,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     public void setAdapterData(List<VehicleGeneral> vehicleGenerals){
         this.vehicleGeneralList = vehicleGenerals;
-        if(!connection && this.vehicleGeneralList.isEmpty()){
-        }else{
-            notifyDataSetChanged();
-        }
-
+        Log.i("RXJAVA", "Adapter " + vehicleGenerals.toString());
+        notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

@@ -7,7 +7,13 @@ import androidx.room.Query;
 
 import com.e.lojadecarros.model.VehicleGeneral;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Observable;
+
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 @Dao
 public interface VehicleDao {

@@ -4,6 +4,8 @@ import com.e.lojadecarros.model.VehicleGeneral;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public interface MainPresenter {
 
     interface View{

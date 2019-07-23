@@ -27,8 +27,8 @@ public abstract class VehicleDatabase extends RoomDatabase {
                             context.getApplicationContext(),
                             VehicleDatabase.class,
                             DATABASE)
-                                .allowMainThreadQueries()
                                 .fallbackToDestructiveMigration()
+//                                .allowMainThreadQueries()
                                 .addCallback(sRoomDatabaseCallback)
                                 .build();
                 }

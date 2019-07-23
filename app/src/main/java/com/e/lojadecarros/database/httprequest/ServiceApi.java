@@ -1,6 +1,7 @@
 package com.e.lojadecarros.database.httprequest;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceApi {
@@ -16,6 +17,7 @@ public class ServiceApi {
             mRetrofit = new Retrofit
                     .Builder()
                     .baseUrl(BASE_URL)
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

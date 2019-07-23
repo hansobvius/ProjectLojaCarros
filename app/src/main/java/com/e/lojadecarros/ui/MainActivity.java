@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import com.facebook.stetho.Stetho;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public class MainActivity extends AppCompatActivity implements MainPresenter.View {
 
     private static final int MAX_PAGS = 3;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     private RecyclerView mRecyclerView;
     private MainAdapter mMainAdapter;
     private ApiRequest apiRequest;
+    private AsyncManager mAsyncManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     protected void onResume(){
         super.onResume();
         getApiRequest();
+        mAsyncManager = new AsyncManager(this, getApplicationContext());
+//        mAsyncManager.getListVehicle();
     }
 
     private void initMainView(){
@@ -66,9 +72,10 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void getVehicleList(List<VehicleGeneral> vehicleGenerals) {
+        Log.i("RXJAVA", "Main " +  vehicleGenerals.toString());
         if(!vehicleGenerals.isEmpty() || vehicleGenerals.size() != 0){
             mMainAdapter.setAdapterData(vehicleGenerals);
-        }else if(!internetConnection() && vehicleGenerals.isEmpty() || vehicleGenerals.size() == 0){
+        }else if(!internetConnection() && vehicleGenerals.isEmpty() || !internetConnection() && vehicleGenerals.size() == 0){
             Toast.makeText(this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
         }
     }

@@ -3,6 +3,8 @@ package com.e.lojadecarros.database.httprequest;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.e.lojadecarros.database.AsyncManager;
 import com.e.lojadecarros.database.VehicleDao;
 import com.e.lojadecarros.database.VehicleDatabase;
@@ -35,8 +37,7 @@ public class ApiRequest {
     }
 
     private void initManager(Context context){
-        this.asyncManager = new AsyncManager(context);
-        this.asyncManager.execute();
+        this.asyncManager = new AsyncManager(view, context);
     }
 
     public void getVehiclesList(int page){
@@ -46,20 +47,23 @@ public class ApiRequest {
                 .getVehicles(page)
                 .enqueue(new Callback<List<VehicleGeneral>>() {
                     @Override
-                    public void onResponse(Call<List<VehicleGeneral>> call, Response<List<VehicleGeneral>> response) {
-                        vehicleDao.insert(response.body());
-                        setMainView();
+                    public void onResponse(@NonNull Call<List<VehicleGeneral>> call, @NonNull Response<List<VehicleGeneral>> response) {
+                        Log.i("RX_JAVA", "SUCCESS " + response.body().toString());
+//                        asyncManager.getVehiclesList(response.body());
+//                        asyncManager.insertVehicles(response.body());
+//                        setMainView();
+                        asyncManager.initiateRequest(response.body());
                     }
 
                     @Override
                     public void onFailure(Call<List<VehicleGeneral>> call, Throwable t) {
                         Log.i("RESPONSE", "ERROR " + t.toString());
-                        view.getVehicleList(asyncManager.getVehicleList());
+//                        setMainView();
                     }
                 });
     }
-
-    private void setMainView(){
-        view.getVehicleList(vehicleDao.getAll());
-    }
+//
+//    private void setMainView(){
+//        asyncManager.getVehiclesList();
+//    }
 }
